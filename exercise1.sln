@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File sending", "File sending\File sending.csproj", "{04B25D65-D82C-409D-AF26-91898508D14C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "File sending", "File sending\File sending.csproj", "{04B25D65-D82C-409D-AF26-91898508D14C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "File-Sending-Tests", "File-Sending-Tests\File-Sending-Tests.csproj", "{892F6850-A136-4F71-AFC1-E7B4414823AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{04B25D65-D82C-409D-AF26-91898508D14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04B25D65-D82C-409D-AF26-91898508D14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04B25D65-D82C-409D-AF26-91898508D14C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{892F6850-A136-4F71-AFC1-E7B4414823AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{892F6850-A136-4F71-AFC1-E7B4414823AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{892F6850-A136-4F71-AFC1-E7B4414823AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{892F6850-A136-4F71-AFC1-E7B4414823AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
