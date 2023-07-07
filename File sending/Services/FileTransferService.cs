@@ -10,31 +10,31 @@ namespace File_sending.Services
     public class FileTransferService : ControllerBase
     {
         private readonly ICSVHelperService _csvService;
-        private readonly IUserFileInfoRepository _UserFileInfoRepository;
-        public FileTransferService(ICSVHelperService csvService, IUserFileInfoRepository UserFileInfoRepository)
+        private readonly Interfaces.IFileTransferRepository _fileTransferRepository;
+        public FileTransferService(ICSVHelperService csvService, Interfaces.IFileTransferRepository FileTransferRepository)
         {
             _csvService = csvService;
-            _UserFileInfoRepository = UserFileInfoRepository;
+            _fileTransferRepository = FileTransferRepository;
         }
 
-        public async Task<UserFileInfo> UploadFile(IFormFile file)
+        public async Task<FileSpecs> UploadFile(IFormFile file)
         {
             var filename = file.FileName.Substring(0, file.FileName.LastIndexOf('.'));
-            var data = _csvService.ReadCSV<UserFile>(file.OpenReadStream());
+            var data = _csvService.ReadCSV<FileContentStructure>(file.OpenReadStream());
             var json = JsonSerializer.Serialize(data);
 
-            if ( await _UserFileInfoRepository.UserFileInfoExist(filename))
+            if ( await _fileTransferRepository.UserFileInfoExist(filename))
             {
-                var oldEntity = await _UserFileInfoRepository.GetUserFileInfo(filename);
+                var oldEntity = await _fileTransferRepository.GetUserFileInfo(filename);
                 oldEntity.Name = filename;
                 oldEntity.Content = json;
                 oldEntity.Updated = DateTime.UtcNow;
-                await _UserFileInfoRepository.UpdateUserFileInfo(oldEntity);
+                await _fileTransferRepository.UpdateUserFileInfo(oldEntity);
                 return oldEntity;
             }
             else
             {
-                var entity = new UserFileInfo
+                var entity = new FileSpecs
                 {
                     Name = file.FileName.Substring(0, file.FileName.LastIndexOf('.')),
                     Content = json,
@@ -43,23 +43,23 @@ namespace File_sending.Services
                     Updated = DateTime.UtcNow
 
                 };
-                await _UserFileInfoRepository.CreateUserFileInfo(entity);
+                await _fileTransferRepository.CreateUserFileInfo(entity);
                 return entity;
             }
         }
 
         public async Task<bool> IsExist(string name)
         {
-            return await _UserFileInfoRepository.UserFileInfoExist(name);
+            return await _fileTransferRepository.UserFileInfoExist(name);
         }
 
-        public async Task<FileContentResult> DownloadFile(string name)
+        public async Task<(string data,string name)> DownloadFile(string name)
         {
-            var data = await _UserFileInfoRepository.GetUserFileInfo(name);
-            var deserealized = JsonSerializer.Deserialize<List<UserFile>>(data.Content);
-            var csv = _csvService.WriteCSV<UserFile>(deserealized);
+            var data = await _fileTransferRepository.GetUserFileInfo(name);
+            var deserealized = JsonSerializer.Deserialize<List<FileContentStructure>>(data.Content);
+            var csv = _csvService.WriteCSV<FileContentStructure>(deserealized);
 
-            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", data.Name);
+            return (csv.ToString(), data.Name);
         }
     }
 }

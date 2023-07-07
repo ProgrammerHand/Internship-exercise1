@@ -1,10 +1,11 @@
 ﻿using File_sending.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace File_sending.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class FileTransferController : ControllerBase
     {
         private readonly FileTransferService _trasferService;
@@ -14,7 +15,7 @@ namespace File_sending.Controllers
             _trasferService = trasferService;
         }
 
-        [HttpPost(Name = "PostFile")]
+        [HttpPost("UploadFile")]
         public async Task<IActionResult> PostUserFile(IFormFile file)
         {
             return Ok( await _trasferService.UploadFile(file));
@@ -27,12 +28,13 @@ namespace File_sending.Controllers
         //    return Ok(data);
         //}
 
-        [HttpGet(Name = "GetFileByName")]
+        [HttpGet("DownloadFile/{name}")]
         public async Task<IActionResult> GetUserFileInfoContent(string name)
         {
             if (!await _trasferService.IsExist(name))
                 return BadRequest("No info about file with such name");
-            return await _trasferService.DownloadFile(name);
+            var result = await _trasferService.DownloadFile(name);
+            return File(Encoding.UTF8.GetBytes(result.data.ToString()), "text/csv", result.name);
         }
     }
 }

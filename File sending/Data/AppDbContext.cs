@@ -10,6 +10,6 @@ namespace File_sending.Data
         {
             
         }
-        public DbSet<UserFileInfo> UserFileInfo { get; set; }
+        public DbSet<Models.FileSpecs> UserFileInfo { get; set; }
     }
 }

@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICSVHelperService, CSVHelperService>();
-builder.Services.AddScoped<IUserFileInfoRepository, UserFileInfoRepository>(); 
+builder.Services.AddScoped<IFileTransferRepository, FileTransferRepository>(); 
 builder.Services.AddScoped<FileTransferService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

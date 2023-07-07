@@ -5,26 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace File_sending.Repository
 {
-    public class UserFileInfoRepository : IUserFileInfoRepository
+    public class FileTransferRepository : Interfaces.IFileTransferRepository
     {
         private readonly AppDbContext _context;
 
-        public UserFileInfoRepository(AppDbContext context)
+        public FileTransferRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<ICollection<UserFileInfo>> GetAll() 
+        public async Task<ICollection<Models.FileSpecs>> GetAll() 
         {
             return await _context.UserFileInfo.OrderBy(p => p.Id).ToListAsync();
         }
 
-        public async Task<UserFileInfo> GetUserFileInfo(int id)
+        public async Task<Models.FileSpecs> GetUserFileInfo(int id)
         {
             return await _context.UserFileInfo.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<UserFileInfo> GetUserFileInfo(string name)
+        public async Task<Models.FileSpecs> GetUserFileInfo(string name)
         {
             return await _context.UserFileInfo.FirstOrDefaultAsync(p => p.Name == name);
         }
@@ -34,13 +34,13 @@ namespace File_sending.Repository
             return await _context.UserFileInfo.AnyAsync(p => p.Name == name);
         }
 
-        public async Task<bool> CreateUserFileInfo(UserFileInfo info)
+        public async Task<bool> CreateUserFileInfo(Models.FileSpecs info)
         {
             await _context.UserFileInfo.AddAsync(info);
             return  await Save();
         }
 
-        public async Task<bool> UpdateUserFileInfo(UserFileInfo info)
+        public async Task<bool> UpdateUserFileInfo(Models.FileSpecs info)
         {
             _context.Update(info);
             return await Save();

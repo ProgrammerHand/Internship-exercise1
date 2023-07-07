@@ -20,7 +20,6 @@ namespace File_sending.Services
         
         public StringBuilder WriteCSV<T>(List<T> records)
         {
-            //using (var writer = new StreamWriter("C:\\Users\\dprotsailo\\Documents\\result.csv"))
             var sb = new StringBuilder();
             StringWriter csvString = new StringWriter(sb);
             using (var csv = new CsvWriter(csvString, CultureInfo.InvariantCulture))

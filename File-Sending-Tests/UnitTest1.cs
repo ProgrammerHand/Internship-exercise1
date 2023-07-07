@@ -1,9 +1,4 @@
-using File_sending.Controllers;
-using File_sending.Interfaces;
-using File_sending.Models;
-using File_sending.Repository;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using File_sending.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
@@ -25,9 +20,20 @@ namespace File_Sending_Tests
         //}
 
         [Fact]
-        public void dummyTest()
+        public void GivenCalculatedSalary_WhenHourPayAndWorkedHoursWeeeklyInserted_returnDouble()
         {
-            Assert.IsTrue(true);
+            //Arrange
+            var hourPay = 30.50;
+            var workedHoursWeekly = 40;
+            var calculatedSalary = (hourPay * workedHoursWeekly) * 52;
+
+            //Act
+            var _service = new SalaryCalculatorService();
+            var actionResult = _service.CalculateSalary(hourPay, workedHoursWeekly);
+
+            //Assert
+            Assert.IsInstanceOfType<double>(actionResult);
+            Assert.IsTrue(actionResult == calculatedSalary);
         }
     }
 }

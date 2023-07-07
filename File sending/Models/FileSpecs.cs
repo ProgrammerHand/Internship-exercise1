@@ -1,6 +1,6 @@
 ﻿namespace File_sending.Models
 {
-    public class UserFileInfo
+    public class FileSpecs
     {
         public int Id { get; set; }
 
