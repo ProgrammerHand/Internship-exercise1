@@ -32,7 +32,7 @@ namespace File_sending.Controllers
         {
             if (!await _trasferService.IsExist(name))
                 return BadRequest("No info about file with such name");
-            return Ok(await _trasferService.DownloadFile(name));
+            return await _trasferService.DownloadFile(name);
         }
     }
 }
