@@ -1,6 +1,7 @@
 ﻿using File_sending.Data;
 using File_sending.Interfaces;
 using File_sending.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace File_sending.Repository
 {
@@ -13,42 +14,42 @@ namespace File_sending.Repository
             _context = context;
         }
 
-        public ICollection<UserFileInfo> GetAll() 
+        public async Task<ICollection<UserFileInfo>> GetAll() 
         {
-            return _context.UserFileInfo.OrderBy(p => p.Id).ToList();
+            return await _context.UserFileInfo.OrderBy(p => p.Id).ToListAsync();
         }
 
-        public UserFileInfo GetUserFileInfo(int id)
+        public async Task<UserFileInfo> GetUserFileInfo(int id)
         {
-            return _context.UserFileInfo.Where(p => p.Id == id).FirstOrDefault();
+            return await _context.UserFileInfo.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public UserFileInfo GetUserFileInfo(string name)
+        public async Task<UserFileInfo> GetUserFileInfo(string name)
         {
-            return _context.UserFileInfo.Where(p => p.Name == name).FirstOrDefault();
+            return await _context.UserFileInfo.FirstOrDefaultAsync(p => p.Name == name);
         }
 
-        public bool UserFileInfoExist(string name)
+        public async Task<bool> UserFileInfoExist(string name)
         {
-            return _context.UserFileInfo.Any(p => p.Name == name);
+            return await _context.UserFileInfo.AnyAsync(p => p.Name == name);
         }
 
-        public bool CreateUserFileInfo(UserFileInfo info)
+        public async Task<bool> CreateUserFileInfo(UserFileInfo info)
         {
-            _context.UserFileInfo.Add(info);
-            return Save();
+            await _context.UserFileInfo.AddAsync(info);
+            return  await Save();
         }
 
-        public bool UpdateUserFileInfo(UserFileInfo info)
+        public async Task<bool> UpdateUserFileInfo(UserFileInfo info)
         {
             _context.Update(info);
-            return Save();
+            return await Save();
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
+            var saved = _context.SaveChangesAsync();
+            return await saved > 0 ? true : false;
         }
     }
 }

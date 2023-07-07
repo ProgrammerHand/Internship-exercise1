@@ -17,7 +17,7 @@ namespace File_sending.Controllers
         [HttpPost(Name = "PostFile")]
         public async Task<IActionResult> PostUserFile(IFormFile file)
         {
-            return Ok(_trasferService.UploadFile(file));
+            return Ok( await _trasferService.UploadFile(file));
         }
 
         //[HttpGet(Name = "GetFilesInfo")]
@@ -30,9 +30,9 @@ namespace File_sending.Controllers
         [HttpGet(Name = "GetFileByName")]
         public async Task<IActionResult> GetUserFileInfoContent(string name)
         {
-            if (!_trasferService.IsExist(name))
+            if (!await _trasferService.IsExist(name))
                 return BadRequest("No info about file with such name");
-            return Ok(_trasferService.DownloadFile(name));
+            return Ok(await _trasferService.DownloadFile(name));
         }
     }
 }

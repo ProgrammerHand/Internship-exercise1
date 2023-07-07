@@ -17,19 +17,19 @@ namespace File_sending.Services
             _UserFileInfoRepository = UserFileInfoRepository;
         }
 
-        public UserFileInfo UploadFile(IFormFile file)
+        public async Task<UserFileInfo> UploadFile(IFormFile file)
         {
             var filename = file.FileName.Substring(0, file.FileName.LastIndexOf('.'));
             var data = _csvService.ReadCSV<UserFile>(file.OpenReadStream());
             var json = JsonSerializer.Serialize(data);
 
-            if (_UserFileInfoRepository.UserFileInfoExist(filename))
+            if ( await _UserFileInfoRepository.UserFileInfoExist(filename))
             {
-                var oldEntity = _UserFileInfoRepository.GetUserFileInfo(filename);
+                var oldEntity = await _UserFileInfoRepository.GetUserFileInfo(filename);
                 oldEntity.Name = filename;
                 oldEntity.Content = json;
                 oldEntity.Updated = DateTime.UtcNow;
-                _UserFileInfoRepository.UpdateUserFileInfo(oldEntity);
+                await _UserFileInfoRepository.UpdateUserFileInfo(oldEntity);
                 return oldEntity;
             }
             else
@@ -43,19 +43,19 @@ namespace File_sending.Services
                     Updated = DateTime.UtcNow
 
                 };
-                _UserFileInfoRepository.CreateUserFileInfo(entity);
+                await _UserFileInfoRepository.CreateUserFileInfo(entity);
                 return entity;
             }
         }
 
-        public bool IsExist(string name)
+        public async Task<bool> IsExist(string name)
         {
-            return _UserFileInfoRepository.UserFileInfoExist(name) ? true : false;
+            return await _UserFileInfoRepository.UserFileInfoExist(name);
         }
 
-        public FileContentResult DownloadFile(string name)
+        public async Task<FileContentResult> DownloadFile(string name)
         {
-            var data = _UserFileInfoRepository.GetUserFileInfo(name);
+            var data = await _UserFileInfoRepository.GetUserFileInfo(name);
             var deserealized = JsonSerializer.Deserialize<List<UserFile>>(data.Content);
             var csv = _csvService.WriteCSV<UserFile>(deserealized);
 

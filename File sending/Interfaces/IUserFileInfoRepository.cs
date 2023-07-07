@@ -4,19 +4,19 @@ namespace File_sending.Interfaces
 {
     public interface IUserFileInfoRepository
     {
-        ICollection<UserFileInfo> GetAll ();
+        Task<ICollection<UserFileInfo>> GetAll ();
 
-        UserFileInfo GetUserFileInfo(int id);
+        Task<UserFileInfo> GetUserFileInfo(int id);
 
-        UserFileInfo GetUserFileInfo(string name);
+        Task<UserFileInfo> GetUserFileInfo(string name);
 
-        bool UserFileInfoExist(string name);
+        Task<bool> UserFileInfoExist(string name);
 
-        bool CreateUserFileInfo(UserFileInfo info);
+        Task<bool> CreateUserFileInfo(UserFileInfo info);
 
-        bool UpdateUserFileInfo(UserFileInfo info);
+        Task<bool> UpdateUserFileInfo(UserFileInfo info);
 
-        bool Save();
+        Task<bool> Save();
 
     }
 }
