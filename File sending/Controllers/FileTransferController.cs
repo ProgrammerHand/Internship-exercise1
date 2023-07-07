@@ -1,9 +1,5 @@
-﻿using File_sending.Interfaces;
-using File_sending.Models;
-using File_sending.Repository;
+﻿using File_sending.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Text.Json;
 
 namespace File_sending.Controllers
 {
@@ -11,45 +7,17 @@ namespace File_sending.Controllers
     [Route("[controller]")]
     public class FileTransferController : ControllerBase
     {
-        private readonly ICSVHelperService _csvService;
-        private readonly IUserFileInfoRepository _UserFileInfoRepository;
+        private readonly FileTransferService _trasferService;
 
-        public FileTransferController(ICSVHelperService csvService, IUserFileInfoRepository UserFileInfoRepository)
+        public FileTransferController(FileTransferService trasferService)
         {
-            _csvService = csvService;
-            _UserFileInfoRepository = UserFileInfoRepository;
+            _trasferService = trasferService;
         }
 
         [HttpPost(Name = "PostFile")]
         public async Task<IActionResult> PostUserFile(IFormFile file)
         {
-            var filename = file.FileName.Substring(0, file.FileName.LastIndexOf('.'));
-            var data = _csvService.ReadCSV<UserFile>(file.OpenReadStream());
-            var json = JsonSerializer.Serialize(data);
-
-            if (_UserFileInfoRepository.UserFileInfoExist(filename))
-            {
-                var oldEntity = _UserFileInfoRepository.GetUserFileInfo(filename);
-                oldEntity.Name = filename;
-                oldEntity.Content = json;
-                oldEntity.Updated = DateTime.UtcNow;
-                _UserFileInfoRepository.UpdateUserFileInfo(oldEntity);
-                return Ok(oldEntity);
-            }
-            else
-            {
-                var entity = new UserFileInfo
-                {
-                    Name = file.FileName.Substring(0, file.FileName.LastIndexOf('.')),
-                    Content = json,
-                    Type = file.FileName.Substring(file.FileName.LastIndexOf('.') + 1),
-                    Created = DateTime.UtcNow,
-                    Updated = DateTime.UtcNow
-
-                };
-                _UserFileInfoRepository.CreateUserFileInfo(entity);
-                return Ok(entity);
-            }
+            return Ok(_trasferService.UploadFile(file));
         }
 
         //[HttpGet(Name = "GetFilesInfo")]
@@ -62,16 +30,9 @@ namespace File_sending.Controllers
         [HttpGet(Name = "GetFileByName")]
         public async Task<IActionResult> GetUserFileInfoContent(string name)
         {
-            if (!_UserFileInfoRepository.UserFileInfoExist(name))
+            if (!_trasferService.IsExist(name))
                 return BadRequest("No info about file with such name");
-            var data = _UserFileInfoRepository.GetUserFileInfo(name);
-            var deserealized = JsonSerializer.Deserialize<List<UserFile>>(data.Content);
-            var csv = _csvService.WriteCSV<UserFile>(deserealized);
-
-            return File(Encoding.UTF8.GetBytes(csv.ToString()), "text/csv", data.Name);
+            return Ok(_trasferService.DownloadFile(name));
         }
-
-
-
     }
 }
