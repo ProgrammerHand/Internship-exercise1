@@ -1,13 +1,11 @@
 ﻿using File_sending.Interfaces;
 using File_sending.Models;
-using File_sending.Repository;
-using System.Text;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
 
 namespace File_sending.Services
 {
-    public class FileTransferService : ControllerBase
+    public class FileTransferService
     {
         private readonly ICSVHelperService _csvService;
         private readonly Interfaces.IFileTransferRepository _fileTransferRepository;
