@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "File sending", "File sendin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "File-Sending-Tests", "File-Sending-Tests\File-Sending-Tests.csproj", "{892F6850-A136-4F71-AFC1-E7B4414823AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastracture", "Infrastracture\Infrastracture.csproj", "{16C02212-63C1-44FE-B56E-71A24B72B8F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastracture", "Infrastracture\Infrastracture.csproj", "{16C02212-63C1-44FE-B56E-71A24B72B8F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{91042B1F-C271-49A0-AFCA-7DE053B932BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{91042B1F-C271-49A0-AFCA-7DE053B932BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{DBDB90E6-AFFE-4E16-BC0D-FFA2B94BCBFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{DBDB90E6-AFFE-4E16-BC0D-FFA2B94BCBFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

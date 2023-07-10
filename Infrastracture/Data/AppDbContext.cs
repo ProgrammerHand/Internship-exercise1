@@ -1,6 +1,4 @@
-﻿using File_sending.Models;
-using File_sending.Repository;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace File_sending.Data
 {
