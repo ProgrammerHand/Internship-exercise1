@@ -8,7 +8,7 @@ namespace File_Sending_Tests
 {
     public class FileTransferIntegrationTests
     {
-        private (FileTransferRepository, FileTransferService) GetDependencies()
+        private static (FileTransferRepository, FileTransferService) GetDependencies()
         {
             var csvHelperService = new CSVHelperService();
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -47,12 +47,12 @@ namespace File_Sending_Tests
             {
                 IFormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
                 await service.UploadFile(file);
-                var inserted = await repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.')));
+                var inserted = repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.'))).Result.Updated;
                 await service.UploadFile(file);
-                var updated = await repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.')));
+                var updated = repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.'))).Result.Updated;
 
                 //Assert
-                Assert.True(inserted.Updated != updated.Updated);
+                Assert.True(inserted != updated);
             }
         }
     }
