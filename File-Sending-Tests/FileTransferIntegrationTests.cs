@@ -53,6 +53,9 @@ namespace File_Sending_Tests
 
                 //Assert
                 Assert.True(inserted.Updated != updated.Updated);
+
+
+                // jeden rekord na bazie (nadpisywania jak jest ten sam name)
             }
         }
     }
