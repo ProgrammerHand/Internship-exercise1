@@ -52,6 +52,7 @@ namespace File_Sending_Tests
                 var updated = repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.'))).Result.Updated;
 
                 //Assert
+                // jeden rekord na bazie (nadpisywania jak jest ten sam name)
                 Assert.True(inserted != updated);
             }
         }
