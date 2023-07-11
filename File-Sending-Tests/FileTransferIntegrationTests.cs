@@ -36,7 +36,7 @@ namespace File_Sending_Tests
                 Assert.True(result);
             }            
         }
-
+        [Fact]
         public async Task GivenCSVFile_WhenInDatabase_ShouldBeUpdatedToDatabase()
         {
             //Arrange
