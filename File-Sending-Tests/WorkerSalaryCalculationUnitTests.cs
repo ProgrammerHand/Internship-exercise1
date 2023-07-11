@@ -1,4 +1,5 @@
-﻿using File_sending.Services;
+﻿using Application.Interfaces;
+using File_sending.Services;
 using Moq;
 
 namespace File_Sending_Tests
@@ -15,24 +16,24 @@ namespace File_Sending_Tests
 
             //Act
             var _service = new SalaryCalculatorService();
-            var calculatedSalary = _service.CalculateSalary(hourPay, workedHoursWeekly);
+            var calculatedSalary = _service.CalculateYearlySalary(hourPay, workedHoursWeekly);
 
             //Assert
-            Assert.True(calculatedSalary == calculatedSalary);
+            Assert.True(expectedCalculatedSalary == calculatedSalary);
         }
 
         [Fact]
-        public void ABC() 
+        public void CalculateSalary_WhenHourPayMockedAndWorkedHoursWeeekly_ReturnSalary() 
         {
             //Arrange
             var workedHoursWeekly = 40;
-            var expectedCalculatedSalary = 400;
+            var expectedCalculatedSalary = 400*52;
             var hoursServiceMock = new Mock<IHourPayService>();
             hoursServiceMock.Setup(x => x.GetHourPay()).Returns(10.0);
 
             //Act
             var _service = new SalaryCalculatorService();
-            var calculatedSalary = _service.CalculateSalaryWithExternalDependency(hoursServiceMock.Object, workedHoursWeekly);
+            var calculatedSalary = _service.CalculateYearlySalaryWithExternalDependency(hoursServiceMock.Object, workedHoursWeekly);
 
             //Assert
             Assert.True(expectedCalculatedSalary == calculatedSalary);

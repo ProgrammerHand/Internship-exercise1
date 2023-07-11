@@ -29,12 +29,31 @@ namespace File_Sending_Tests
             using (var stream = System.IO.File.OpenRead("test2.csv"))
             {
                 IFormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
-                service.UploadFile(file);
+                await service.UploadFile(file);
                 var result = await repository.UserFileInfoExist(file.FileName.Substring(0, file.FileName.LastIndexOf('.')));
 
                 //Assert
                 Assert.True(result);
             }            
+        }
+
+        public async Task GivenCSVFile_WhenInDatabase_ShouldBeUpdatedToDatabase()
+        {
+            //Arrange
+            (var repository, var service) = GetDependencies();
+
+            //Act
+            using (var stream = System.IO.File.OpenRead("test2.csv"))
+            {
+                IFormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
+                await service.UploadFile(file);
+                var inserted = await repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.')));
+                await service.UploadFile(file);
+                var updated = await repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.')));
+
+                //Assert
+                Assert.True(inserted.Updated != updated.Updated);
+            }
         }
     }
 }

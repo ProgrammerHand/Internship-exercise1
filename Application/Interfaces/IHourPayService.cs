@@ -1,4 +1,4 @@
-﻿namespace File_sending.Services
+﻿namespace Application.Interfaces
 {
     public interface IHourPayService
     {
