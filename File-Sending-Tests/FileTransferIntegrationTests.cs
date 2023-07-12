@@ -8,7 +8,7 @@ namespace File_Sending_Tests
 {
     public class FileTransferIntegrationTests
     {
-        private static (FileTransferRepository, FileTransferService) GetDependencies()
+        private static (FileTransferRepository, FileTransferService, AppDbContext) GetDependencies()
         {
             var csvHelperService = new CSVHelperService();
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -16,14 +16,14 @@ namespace File_Sending_Tests
             var repository = new FileTransferRepository(context);
             var service = new FileTransferService(csvHelperService, repository);
 
-            return (repository, service);
+            return (repository, service, context);
         }
 
         [Fact]
         public async Task GivenCSVFile_WhenNotInDatabase_ShouldBeAddedToDatabase()
         {
             //Arrange
-            (var repository, var service) = GetDependencies();
+            (var repository, var service, var context) = GetDependencies();
 
             //Act
             using (var stream = System.IO.File.OpenRead("test2.csv"))
@@ -40,7 +40,7 @@ namespace File_Sending_Tests
         public async Task GivenCSVFile_WhenInDatabase_ShouldBeUpdatedToDatabase()
         {
             //Arrange
-            (var repository, var service) = GetDependencies();
+            (var repository, var service, var context) = GetDependencies();
 
             //Act
             using (var stream = System.IO.File.OpenRead("test2.csv"))
@@ -51,8 +51,7 @@ namespace File_Sending_Tests
                 await service.UploadFile(file);
                 var updated = repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.'))).Result.Updated;
 
-                //Assert
-                // jeden rekord na bazie (nadpisywania jak jest ten sam name)
+                Assert.True(context.UserFileInfo.Count() == 1);
                 Assert.True(inserted != updated);
             }
         }
