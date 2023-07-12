@@ -51,6 +51,7 @@ namespace File_Sending_Tests
                 await service.UploadFile(file);
                 var updated = repository.GetUserFileInfo(file.FileName.Substring(0, file.FileName.LastIndexOf('.'))).Result.Updated;
 
+                //check amount
                 Assert.True(context.UserFileInfo.Count() == 1);
                 Assert.True(inserted != updated);
             }
