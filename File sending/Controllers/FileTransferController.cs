@@ -5,7 +5,7 @@ using System.Text;
 namespace File_sending.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class FileTransferController : ControllerBase
     {
         private readonly FileTransferService _trasferService;
