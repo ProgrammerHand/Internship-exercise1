@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'dmytro-exercise-1'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BE3626B1E5134BAD924165C78C959C60 }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
           package: .
