@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(opts =>
 {
-    opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opts.UseSqlServer(builder.Configuration.GetConnectionString("Azure_SQL_ConnectionString"));
 });
 
 var app = builder.Build();
@@ -32,6 +32,7 @@ var app = builder.Build();
 //}
 
 app.UseSwagger();
+
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
