@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\File sending\File sending.csproj" />
+    <ProjectReference Include="..\File sending\FileSending.csproj" />
   </ItemGroup>
 
   <ItemGroup>
